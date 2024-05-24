@@ -29,7 +29,9 @@ run().catch(console.dir);
 //     .then(() => console.log('MongoDB Connected'))
 //     .catch(err => console.error('MongoDB Connection Failed', err));
 
-
+app.get('/',(req,res)=>{
+  res.send({"message" : "started!!"})
+})
     
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/properties', require('./routes/propertyRoutes'));
