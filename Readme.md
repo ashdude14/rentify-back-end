@@ -1,91 +1,133 @@
-# To implement the Email Service 
-## Import nodemailer package 
-``` 
-npm i nodemailer
-```
-<b> Create a temporary Email Account using Ethereal </b>
+# Real Estate Management API [Rentify Backend | Hackathon]
 
-## Make configuration for Nodemailer
+This is a Node.js application built with Express and MongoDB for managing users and properties. It includes endpoints for user registration, authentication, and property management.
 
-```js
-const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: 'madisen.nikolaus@ethereal.email', // temporary email address
-        pass: 'WRz1CMEA87xAhFdVYK' // temporary password 
-    }
-});
-```
-### Set up the .env file
-```
-MONGO_URI=
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Usage](#usage)
+- [Endpoints](#endpoints)
+  - [Health Check](#health-check)
+  - [User Endpoints](#user-endpoints)
+  - [Property Endpoints](#property-endpoints)
+- [Error Handling](#error-handling)
+- [License](#license)
+
+## Prerequisites
+
+Ensure you have the following installed:
+
+- Node.js
+- npm (Node Package Manager)
+- MongoDB
+
+## Installation
+
+1. Clone the repository:
+
+    ```sh
+    git clone https://github.com/ashdude14/rentify-back-end.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```sh
+    cd your-repo
+    ```
+
+3. Install the dependencies:
+
+    ```sh
+    npm install
+    ```
+
+## Environment Variables
+Create a `.env` file in the root directory of the project and add your MongoDB URI and other configurations:
+
+```plaintext
+MONGO_URI=your_mongodb_uri
+PORT=
 JWT_SECRET=
-EMAIL_USER=
-EMAIL_PASS=
+EMAIL_USER=madisen.nikolaus@ethereal.email
+EMAIL_PASS=WRz1CMEA87xAhFdVYK
 HOST=smtp.ethereal.email
 ```
+## Usage
+To start the server, run:
 
-User Authentication Endpoints
-Register User
+```sh
+npm start
+```
+The server will start on the port specified in the .env file or the default port 5000.
 
-URL: /api/users/register (done)
-Method: POST
-Description: Registers a new user (either buyer or seller) with their details.
-Request Body: { firstName, lastName, email, phoneNumber, password, isSeller }
-Login User
+## Endpoints
+# Health Check
+```
+GET /
+```
+Returns a message indicating the server is running.
 
-URL: /api/users/login (done)
-Method: POST
-Description: Authenticates a user and returns a JWT token.
-Request Body: { email, password }
-Get User Profile
+Response:
 
-URL: /api/users/profile (done)
-Method: GET
-Description: Retrieves the authenticated user's profile.
-Protected: Yes
-Property Management Endpoints
-Add Property
+```json
+{
+  "message": "started!!"
+}
+```
+# User Endpoints
+```
+URL: /api/users
+```
+Methods: Various methods for user registration, authentication, and management.
+File: ./routes/userRoutes.js
 
-URL: /api/properties (done)
-Method: POST
-Description: Allows a seller to add a new property.
-Protected: Yes
-Request Body: { title, description, price, address, area, bedrooms, bathrooms, nearbyHospitals, nearbyColleges }
-Get All Properties
+# Property Endpoints
+```
+URL: /api/properties
+```
+Methods: Various methods for property creation, updating, deletion, and fetching.
+File: ./routes/propertyRoutes.js
+Example Configuration for Mongoose
+The application connects to MongoDB using Mongoose. Here is an example configuration:
 
-URL: /api/properties (done)
-Method: GET
-Description: Retrieves a list of all properties.
-Get Seller's Properties
+```js
 
-URL: /api/properties/myproperties (TBC)---->
-Method: GET
-Description: Retrieves properties posted by the authenticated seller.
-Protected: Yes
-Update Property
+const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 
-URL: /api/properties/:id (TBC) -->
-Method: PUT
-Description: Allows a seller to update details of a specific property.
-Protected: Yes
-Request Body: { title, description, price, address, area, bedrooms, bathrooms, nearbyHospitals, nearbyColleges }
-Delete Property
+async function run() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, clientOptions);
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } catch(err) {
+    console.log('Error while connecting with MongoDb', err);
+  }
+}
+run().catch(console.dir);
+```
+## Error Handling
+All endpoints return a standard error response in case of failure:
 
-URL: /api/properties/:id (TBC) -->
-Method: DELETE
-Description: Allows a seller to delete a specific property.
-Protected: Yes
-Interested Buyer Endpoints
-Mark Interest in Property
-URL: /api/properties/interest/:id (done)
-Method: POST
-Description: Allows a buyer to express interest in a property, and sends an email to the seller with buyer's details.
-Protected: Yes
-Extra Features (If Implemented)
-Like a Property
-URL: /api/properties/like/:id  (done)
-Method: POST
-Description: Allows a buyer to like a property and tracks the count.
-Protected: Yes
+```json
+
+{
+  "error": "Error message"
+}
+```
+Common Error Codes
+```json
+400: Bad Request
+404: Not Found
+500: Internal Server Error
+```
+## License
+This project is licensed under the MIT License.
+
+
+
+
+
+
+
