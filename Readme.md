@@ -35,7 +35,8 @@ Ensure you have the following installed:
 2. Navigate to the project directory:
 
     ```sh
-    cd your-repo
+    cd rentify-back-end
+
     ```
 
 3. Install the dependencies:
