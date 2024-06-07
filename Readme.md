@@ -12,6 +12,7 @@ This is a Node.js application built with Express and MongoDB for managing users 
   - [Health Check](#health-check)
   - [User Endpoints](#user-endpoints)
   - [Property Endpoints](#property-endpoints)
+  - [Email Service](#email-service)
 - [Error Handling](#error-handling)
 - [License](#license)
 
@@ -106,6 +107,44 @@ async function run() {
   }
 }
 run().catch(console.dir);
+```
+# Email Service
+Email Service
+This application uses Nodemailer to send emails. Below is the setup:
+
+Configure Nodemailer:
+
+```js
+
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    host: process.env.HOST,
+    port: 587,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+```
+Example usage to send an email:
+
+```js
+
+const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: 'recipient@example.com',
+    subject: 'Test Email',
+    text: 'This is a test email from Nodemailer using Ethereal.'
+};
+
+transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        return console.log(error);
+    }
+    console.log('Message sent: %s', info.messageId);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+});
 ```
 ## Error Handling
 All endpoints return a standard error response in case of failure:
